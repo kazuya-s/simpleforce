@@ -225,6 +225,19 @@ func (client *Client) LoginPassword(username, password, token string) error {
 	return nil
 }
 
+// Set oAuth access token
+// Ref: https://developer.salesforce.com/blogs/developer-relations/2011/03/oauth-and-the-soap-api
+func (client *Client) SetAccessToken(accessToken, instanceURL string) error {
+	client.sessionID = accessToken
+	client.instanceURL = instanceURL
+	client.user.id = ""
+	client.user.name = ""
+	client.user.email = ""
+	client.user.fullName = ""
+
+	return nil
+}
+
 // httpRequest executes an HTTP request to the salesforce server and returns the response data in byte buffer.
 func (client *Client) httpRequest(method, url string, body io.Reader) ([]byte, error) {
 	req, err := http.NewRequest(method, url, body)
